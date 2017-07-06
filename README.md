@@ -54,7 +54,6 @@ react-native log-ios
 
 ###How to Keep your new app updated from the original TheApp Repo
 ...
-# Assign the original repo to a remote called "upstream"
 Clone your new repository
 git clone <new repository>.git
 ...
