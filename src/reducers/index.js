@@ -46,10 +46,12 @@ function nav(state = initialNavState, action) {
         );
           break;
         case 'Main':
+        
           nextState = AppNavigator.router.getStateForAction(
             NavigationActions.navigate({ routeName: 'Main' }),
             state
           );
+          nextState = { ...nextState, user: action.user };
             break;
     default:
       nextState = AppNavigator.router.getStateForAction(action, state);
@@ -57,6 +59,7 @@ function nav(state = initialNavState, action) {
   }
 
   // Simply return the original `state` if `nextState` is null or undefined.
+
   return nextState || state;
 }
 

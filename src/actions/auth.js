@@ -34,17 +34,14 @@ export function login(email, password) {
        dispatch(signUpRequested(true));
        firebaseApp.auth().signInWithEmailAndPassword(email, password)
        .then((user) => {
-         console.log(user.uid);
-
-
          var usernameListRef = firebaseApp.database().ref('users');
          //var usersRef = usernameListRef.child('users');
          var loggedInUserRef = usernameListRef.child(user.uid);
          var path = loggedInUserRef.toString();
-         console.log(path);
+
          loggedInUserRef.once('value')
   .then(function(dataSnapshot) {
-    console.log(dataSnapshot.val());
+    //console.log(dataSnapshot.val());
      dispatch(loginSuccess(dataSnapshot.val()));
     // handle read data.
   });

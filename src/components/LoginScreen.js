@@ -77,7 +77,7 @@ class LoginScreen extends React.Component {
      if (this.props.user.uid)
      {
        //console.log(this.props);
-       this.props.navigation.dispatch({ type: 'Main' })
+       this.props.navigation.dispatch({ type: 'Main' }, this.props.user)
      }
    }
 
