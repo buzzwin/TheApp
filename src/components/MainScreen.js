@@ -1,5 +1,8 @@
 import React, { PropTypes } from 'react';
-import { Button, StyleSheet, Text, View , TextInput} from 'react-native';
+//import { Button, StyleSheet, Text, View , TextInput, FlatList} from 'react-native';
+import { View, Text, StyleSheet, FlatList, ActivityIndicator } from "react-native";
+import { List, ListItem, SearchBar } from "react-native-elements";
+
 import {signUp} from '../actions/auth'
 import {connect} from 'react-redux'
 
@@ -15,6 +18,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
     color: '#FFF584',
+  },
+  row: {
+    fontSize: 13,
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
   },
   description: {
     fontSize: 15,
@@ -55,7 +64,13 @@ class MainScreen extends React.Component {
          email: '',
          password: '',
          name: '',
-         errorMessage: ''
+         errorMessage: '',
+         loading: false,
+         data: [],
+         page: 1,
+         seed: 1,
+         error: null,
+         refreshing: false
       }
   }
   updateName = (text) => {
@@ -76,42 +91,119 @@ class MainScreen extends React.Component {
       //console.log(this.props);
 
    }
-   componentDidUpdate(){
 
+   componentDidMount() {
+     this.makeRemoteRequest();
    }
 
-renderErrorMessage(){
-  if (this.props.error) {
-    const errorMessage = this.props.error.message
-    return (
-      <Text style={styles.description}>
-        {errorMessage}
-      </Text>
-    )
+   makeRemoteRequest = () => {
+     const { page, seed } = this.state;
+     const url = `https://randomuser.me/api/?seed=${seed}&page=${page}&results=20`;
+     this.setState({ loading: true });
 
-  }
+     fetch(url)
+       .then(res => res.json())
+       .then(res => {
+         this.setState({
+           data: page === 1 ? res.results : [...this.state.data, ...res.results],
+           error: res.error || null,
+           loading: false,
+           refreshing: false
+         });
+       })
+       .catch(error => {
+         this.setState({ error, loading: false });
+       });
+   };
+
+   handleRefresh = () => {
+     this.setState(
+       {
+         page: 1,
+         seed: this.state.seed + 1,
+         refreshing: true
+       },
+       () => {
+         this.makeRemoteRequest();
+       }
+     );
+   };
+
+   handleLoadMore = () => {
+     this.setState(
+       {
+         page: this.state.page + 1
+       },
+       () => {
+         this.makeRemoteRequest();
+       }
+     );
+   };
+
+   renderSeparator = () => {
+     return (
+       <View
+         style={{
+           height: 1,
+           width: "86%",
+           backgroundColor: "#CED0CE",
+           marginLeft: "14%"
+         }}
+       />
+     );
+   };
+
+   renderHeader = () => {
+     return <SearchBar placeholder="Type Here..." lightTheme round />;
+   };
+
+   renderFooter = () => {
+     if (!this.state.loading) return null;
+
+     return (
+       <View
+         style={{
+           paddingVertical: 20,
+           borderTopWidth: 1,
+           borderColor: "#CED0CE"
+         }}
+       >
+         <ActivityIndicator animating size="large" />
+       </View>
+     );
+   };
+
+   render() {
+     return (
+       <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
+         <FlatList
+           data={this.state.data}
+           renderItem={({ item }) => (
+             <ListItem
+               roundAvatar
+               title={`${item.name.first} ${item.name.last}`}
+               subtitle={item.email}
+               avatar={{ uri: item.picture.thumbnail }}
+               containerStyle={{ borderBottomWidth: 0 }}
+             />
+           )}
+           keyExtractor={item => item.email}
+           ItemSeparatorComponent={this.renderSeparator}
+           ListHeaderComponent={this.renderHeader}
+           ListFooterComponent={this.renderFooter}
+           onRefresh={this.handleRefresh}
+           refreshing={this.state.refreshing}
+           onEndReached={this.handleLoadMore}
+           onEndReachedThreshold={50}
+         />
+       </List>
+     );
+   }
+ }
 
 
-}
-
-  render() {
-
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-            Hello {this.props.user.username}!
-        </Text>
-        <Text style={styles.description}>
-
-        </Text>
-        {this.renderErrorMessage()}
 
 
-
-      </View>
-    );
-  }
-}
 
 MainScreen.propTypes = {
   navigation: PropTypes.object.isRequired,

@@ -25,9 +25,10 @@ Let's install all the dependencies:
 
 ```
 npm install
+
 ```
 
-**Optional step Make sure all the packages are linked to React Native:**
+**Not so Optional step(react-native-vector-icons seems to no work without this for IOS) Make sure all the packages are linked to React Native:**
 ```
 react-native link
 ```
