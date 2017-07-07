@@ -53,27 +53,33 @@ To see the logs:
 react-native log-ios
 ```
 
-###How to Keep your new app updated from the original TheApp Repo
-...
+### How to Keep your new app updated from the original TheApp Repo
+
 Clone your new repository
+```
 git clone <new repository>.git
-...
+```
 
 Navigate to the repository root
+```
 cd <new repository>
-...
+```
 Add a reference to your original repository
+```
 git remote add upstream https://github.com/buzzwin/TheApp
-...
+```
 Pull all code from the original repository
+```
 git pull upstream master
-...
+```
 Push all code to the new repository
+```
 git push origin master
-...
+```
 You should now be able to take changes in the TheApp repository and then pull in the new app to merge in all those changes.
+```
 git pull upstream master
-...
+```
 
-###How to Debug
+### How to Debug
 Use http://localhost:8081/debugger-ui
