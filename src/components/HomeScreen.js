@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Button, StyleSheet, Text, View , TextInput} from 'react-native';
+import {connect} from 'react-redux';
+import {checkLogin} from '../actions/auth';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,14 +27,20 @@ const styles = StyleSheet.create({
 
 
 class HomeScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Home',
-  };
+  //static navigationOptions = {
+  //  title: 'Home',
+  //};
   constructor(props)
   {
     super(props);
   
   }
+
+  componentDidMount() {
+    console.log("componentDidMount", Date.now());
+    this.props.dispatch(checkLogin());
+  }
+
   render() {
 
     return (
@@ -66,4 +74,10 @@ HomeScreen.navigationOptions = {
   title: 'Home',
 };
 
-export default HomeScreen;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    checkLogin: () => dispatch(checkLogin())
+  };
+};
+
+export default connect()(HomeScreen);

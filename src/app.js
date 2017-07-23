@@ -8,9 +8,9 @@ import AppWithNavigationState from './navigators/AppNavigator';
 
 import configureStore from './store';
 
+console.ignoredYellowBox = ['Setting a timer'];
+
 class TheApp extends React.Component {
-
-
 
   render() {
     const store = configureStore();

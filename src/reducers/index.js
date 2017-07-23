@@ -10,14 +10,13 @@ const registerAction = AppNavigator.router.getActionForPathAndParams('Register')
 const homeAction = AppNavigator.router.getActionForPathAndParams('Login');
 const mainAction = AppNavigator.router.getActionForPathAndParams('Main');
 
-
 const initialNavState = AppNavigator.router.getStateForAction(
   secondAction,
-  tempNavState,
+  tempNavState
 
 );
 
-function nav(state = initialNavState, action) {
+function nav(state = tempNavState, action) {
   let nextState;
 
   switch (action.type) {

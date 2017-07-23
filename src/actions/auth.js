@@ -111,4 +111,41 @@ var userProfile = {};
              }).catch((error) => dispatch(signUpRejected(error)));;
 
    };
+
+}
+
+export function checkLogin() {
+    return (dispatch) => {
+        //dispatch(signUpRequested(true));
+        firebaseApp.auth().onAuthStateChanged(function(user) {
+           if (user) {
+               console.log("user ", user);
+               dispatch({
+                  type: "Main"
+               });
+           }
+           else {
+               console.log("user signed out");
+           }
+        });
+
+        //var user = firebaseApp.auth().currentUser;
+        //if (user) {
+        //    console.log("user ", user);
+        //    //Check if user in state is same as user authenticated
+        //    //If not, get user data from db
+        //
+        //    //Redirect to MainScreen if logged in
+        //    dispatch({
+        //       type: "Main"
+        //    });
+        //}
+        //else {
+        //    console.log("user is not signed in");
+        //    //Redirect to login screen
+        //    dispatch({
+        //        type: 'Home'
+        //    });
+        //}
+    };
 }
