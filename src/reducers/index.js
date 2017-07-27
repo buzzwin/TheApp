@@ -3,20 +3,23 @@ import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
 
 // Start with two routes: The Main screen, with the Login screen on top.
-const firstAction = AppNavigator.router.getActionForPathAndParams('Home');
-const tempNavState = AppNavigator.router.getStateForAction(firstAction);
+const firstAction = AppNavigator.router.getActionForPathAndParams('Main');
+
+//DrawerNavigator will load first item in its list
+//If a firstAction is defined, that component will be mounted twice
+const initialNavState = AppNavigator.router.getStateForAction({});
 const secondAction = AppNavigator.router.getActionForPathAndParams('Home');
 const registerAction = AppNavigator.router.getActionForPathAndParams('Register');
 const homeAction = AppNavigator.router.getActionForPathAndParams('Login');
 const mainAction = AppNavigator.router.getActionForPathAndParams('Main');
 
-const initialNavState = AppNavigator.router.getStateForAction(
-  secondAction,
-  tempNavState
+//const initialNavState = AppNavigator.router.getStateForAction(
+//  secondAction,
+//  tempNavState
+//
+//);
 
-);
-
-function nav(state = tempNavState, action) {
+function nav(state = initialNavState, action) {
   let nextState;
 
   switch (action.type) {

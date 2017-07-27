@@ -72,6 +72,7 @@ class LoginScreen extends React.Component {
       //console.log(this.props);
 
    }
+
    componentDidUpdate(){
      //console.log(this.props);
      if (this.props.user.uid)
@@ -141,6 +142,11 @@ renderErrorMessage(){
           title="Log in"
           color="#AAFF84"
         />
+          <Button
+              onPress={() => this.props.navigation.dispatch({ type: 'Register' })}
+              title="Sign Up"
+              color="#F11984"
+          />
       </View>
     );
   }

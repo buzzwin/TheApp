@@ -3,7 +3,7 @@ import React, { PropTypes } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from "react-native";
 import { List, ListItem, SearchBar } from "react-native-elements";
 
-import {signUp} from '../actions/auth'
+import {signUp, checkLogin} from '../actions/auth'
 import {connect} from 'react-redux'
 
 const styles = StyleSheet.create({
@@ -52,9 +52,6 @@ const styles = StyleSheet.create({
 
 
 class MainScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Main',
-  };
   constructor(props)
   {
     super(props);
@@ -83,17 +80,10 @@ class MainScreen extends React.Component {
    updatePassword = (text) => {
       this.setState({password: text})
    }
-   login = () => {
-
-      //console.log(this.props);
-      this.props.signUp(this.state.email, this.state.password, this.state.name)
-      //this.props.navigation.dispatch({ type: 'Login' })
-      //console.log(this.props);
-
-   }
 
    componentDidMount() {
-     this.makeRemoteRequest();
+       this.makeRemoteRequest();
+       this.props.checkLogin();
    }
 
    makeRemoteRequest = () => {
@@ -210,7 +200,7 @@ MainScreen.propTypes = {
 };
 
 MainScreen.navigationOptions = {
-  title: 'MainScreen',
+  title: 'MainScreen'
 };
 
 // MainScreen.js
@@ -224,6 +214,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        checkLogin: () => dispatch(checkLogin())
     };
 };
 

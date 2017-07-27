@@ -2,3 +2,5 @@
 /android/app/build/
 /android/.gradle/
 /node_modules/
+.idea/
+src/containers/

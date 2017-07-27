@@ -167,7 +167,7 @@ RegisterScreen.propTypes = {
 };
 
 RegisterScreen.navigationOptions = {
-  title: 'Log In',
+  title: 'Sign Up',
 };
 
 // RegisterScreen.js

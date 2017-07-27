@@ -1,5 +1,7 @@
 import {firebaseApp} from '../database/firebase'
 
+import { NavigationActions } from 'react-navigation';
+
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED'
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
 export const SIGN_UP_REQUESTED = 'SIGN_UP_REQUESTED'
@@ -116,36 +118,28 @@ var userProfile = {};
 
 export function checkLogin() {
     return (dispatch) => {
-        //dispatch(signUpRequested(true));
-        firebaseApp.auth().onAuthStateChanged(function(user) {
-           if (user) {
-               console.log("user ", user);
-               dispatch({
-                  type: "Main"
-               });
-           }
-           else {
-               console.log("user signed out");
-           }
+        firebaseApp.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                console.log("user ", user);
+                //dispatch(resetNav('Main'));
+            }
+            else {
+                console.log("user not signed in");
+                //dispatch(resetNav('Login'));
+                dispatch('Login');
+            }
         });
-
-        //var user = firebaseApp.auth().currentUser;
-        //if (user) {
-        //    console.log("user ", user);
-        //    //Check if user in state is same as user authenticated
-        //    //If not, get user data from db
-        //
-        //    //Redirect to MainScreen if logged in
-        //    dispatch({
-        //       type: "Main"
-        //    });
-        //}
-        //else {
-        //    console.log("user is not signed in");
-        //    //Redirect to login screen
-        //    dispatch({
-        //        type: 'Home'
-        //    });
-        //}
     };
+}
+
+export function resetNav(routeName) {
+    return (dispatch) => {
+        const resetAction = NavigationActions.reset({
+            index: 0,
+            actions: [
+                NavigationActions.navigate({ routeName: routeName })
+            ]
+        });
+        dispatch(resetAction);
+    }
 }
