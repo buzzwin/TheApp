@@ -1,16 +1,14 @@
 import { combineReducers } from 'redux';
 import { NavigationActions } from 'react-navigation';
 import { AppNavigator } from '../navigators/AppNavigator';
-
-// Start with two routes: The Main screen, with the Login screen on top.
-const firstAction = AppNavigator.router.getActionForPathAndParams('Main');
+import {LOGIN_DRAWER, MAIN_DRAWER} from '../actions/auth';
 
 //DrawerNavigator will load first item in its list
 //If a firstAction is defined, that component will be mounted twice
 const initialNavState = AppNavigator.router.getStateForAction({});
-const secondAction = AppNavigator.router.getActionForPathAndParams('Home');
 const registerAction = AppNavigator.router.getActionForPathAndParams('Register');
-const homeAction = AppNavigator.router.getActionForPathAndParams('Login');
+const homeAction = AppNavigator.router.getActionForPathAndParams('Home');
+const loginAction = AppNavigator.router.getActionForPathAndParams('Login');
 const mainAction = AppNavigator.router.getActionForPathAndParams('Main');
 
 //const initialNavState = AppNavigator.router.getStateForAction(
@@ -23,6 +21,18 @@ function nav(state = initialNavState, action) {
   let nextState;
 
   switch (action.type) {
+    case LOGIN_DRAWER:
+      nextState = AppNavigator.router.getStateForAction(
+          NavigationActions.navigate({ routeName: 'LoginDrawer', undefined, loginAction }),
+          state
+      );
+      break;
+    case MAIN_DRAWER:
+      nextState = AppNavigator.router.getStateForAction(
+          NavigationActions.navigate({ routeName: 'MainDrawer', undefined, mainAction }),
+          state
+      );
+      break;
     case 'Home':
       nextState = AppNavigator.router.getStateForAction(
         NavigationActions.navigate({ routeName: 'Home' }),
@@ -31,7 +41,7 @@ function nav(state = initialNavState, action) {
         break;
     case 'Login':
       nextState = AppNavigator.router.getStateForAction(
-        NavigationActions.navigate({ routeName: 'Login' }),
+        NavigationActions.navigate({ routeName: 'LoginDrawer', undefined, homeAction }),
         state
       );
         break;

@@ -2,13 +2,14 @@ import {firebaseApp} from '../database/firebase'
 
 import { NavigationActions } from 'react-navigation';
 
-export const LOGIN_REQUESTED = 'LOGIN_REQUESTED'
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS'
-export const SIGN_UP_REQUESTED = 'SIGN_UP_REQUESTED'
-export const SIGN_UP_REJECTED = 'SIGN_UP_REJECTED'
-export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS'
+export const LOGIN_REQUESTED = 'LOGIN_REQUESTED';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const SIGN_UP_REQUESTED = 'SIGN_UP_REQUESTED';
+export const SIGN_UP_REJECTED = 'SIGN_UP_REJECTED';
+export const SIGN_UP_SUCCESS = 'SIGN_UP_SUCCESS';
 
-
+export const LOGIN_DRAWER = 'LoginDrawer';
+export const MAIN_DRAWER = 'MainDrawer';
 
 export function loginRejected(error) {
     return {
@@ -121,15 +122,26 @@ export function checkLogin() {
         firebaseApp.auth().onAuthStateChanged(function (user) {
             if (user) {
                 console.log("user ", user);
-                //dispatch(resetNav('Main'));
+                dispatch(loginSuccess(user));
             }
             else {
                 console.log("user not signed in");
-                //dispatch(resetNav('Login'));
-                dispatch('Login');
+                dispatch({type: LOGIN_DRAWER});
             }
         });
     };
+}
+
+export function signOut() {
+    return (dispatch) => {
+        firebaseApp.auth().signOut()
+            .then(function() {
+                console.log('Signed Out');
+            })
+            .catch(function(error) {
+                console.error('Sign Out Error', error);
+            });
+    }
 }
 
 export function resetNav(routeName) {
